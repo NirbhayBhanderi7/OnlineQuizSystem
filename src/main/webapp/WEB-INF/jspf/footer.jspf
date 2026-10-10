@@ -1,0 +1,10 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; <%= java.time.Year.now() %> Online Quiz System</span>
+    <span>&middot;</span>
+    <span>Java &middot; JSP &middot; Servlets &middot; MySQL</span>
+  </div>
+</footer>
+<script src="<%=request.getContextPath()%>/js/app.js"></script>
+</body>
+</html>
