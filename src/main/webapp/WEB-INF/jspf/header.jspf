@@ -1,0 +1,45 @@
+<%-- Shared header/navigation. Included via <%@ include %> (compile-time text
+     splice) so it shares scope with the parent page - it declares no
+     conflicting variables and only reads the existing "student"/"admin"
+     session attributes that the real servlets already set. --%>
+<%@ page import="com.onlinequiz.model.Student,com.onlinequiz.model.Admin" %>
+<%
+    Student __navStudent = (Student) session.getAttribute("student");
+    Admin __navAdmin = (Admin) session.getAttribute("admin");
+    String __ctx = request.getContextPath();
+%>
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="brand" href="<%=__ctx%><%= __navAdmin != null ? "/adminDashboard" : "/index.jsp" %>">
+      <span class="brand-mark">OQ</span>
+      <span class="brand-text"><%= __navAdmin != null ? "Quiz Admin" : "Online Quiz" %></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" id="navLinks">
+<%  if (__navAdmin != null) { %>
+      <a href="<%=__ctx%>/adminDashboard">Dashboard</a>
+      <!--<a href="<%=__ctx%>/adminDashboard#quizzes">Manage Quizzes</a>-->
+      <a href="<%=__ctx%>/viewStudents">Students</a>
+      <a href="<%=__ctx%>/viewResults">Results</a>
+      <span class="nav-user"><span class="nav-user-avatar"><%= __navAdmin.getName()!=null && __navAdmin.getName().length()>0 ? __navAdmin.getName().substring(0,1).toUpperCase() : "A" %></span><%=__navAdmin.getName()%></span>
+      <a href="<%=__ctx%>/logout" class="nav-logout">Logout</a>
+<%  } else if (__navStudent != null) { %>
+      <a href="<%=__ctx%>/dashboard">Available Quizzes</a>
+      <a href="<%=__ctx%>/leaderboard">Leaderboard</a>
+      <span class="nav-user"><span class="nav-user-avatar"><%= __navStudent.getName()!=null && __navStudent.getName().length()>0 ? __navStudent.getName().substring(0,1).toUpperCase() : "S" %></span><%=__navStudent.getName()%></span>
+      <a href="<%=__ctx%>/logout" class="nav-logout">Logout</a>
+<%  } else { %>
+      <a href="<%=__ctx%>/index.jsp">Home</a>
+      <a href="<%=__ctx%>/login.jsp">Student Login</a>
+      <a href="<%=__ctx%>/register.jsp">Register</a>
+      <a href="<%=__ctx%>/admin/login.jsp" class="nav-admin">Admin</a>
+<%  } %>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+        <svg id="themeToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5Z"/></svg>
+        <span class="theme-toggle-label" id="themeToggleLabel">Dark mode</span>
+      </button>
+    </nav>
+  </div>
+</header>
