@@ -1,0 +1,29 @@
+ONLINE QUIZ SYSTEM — SESSION, NAVBAR, QUESTION EDITING AND TIMER FIXES
+
+Changes included
+----------------
+1. Retained the authentication filter for student and admin pages/actions.
+2. Protected student quiz/dashboard/result/leaderboard routes and admin JSP/servlet routes.
+3. Added no-cache headers for protected routes and session invalidation on logout.
+4. Rotated sessions after successful student/admin login; normal inactivity timeout is 30 minutes.
+5. Kept the shared navbar logo role-aware: admin logo opens Admin Dashboard; otherwise it opens public home.
+6. Added mandatory Time per Question (minutes) on Create Quiz, default 1 minute.
+7. Persisted time_per_question_minutes in the quizzes table.
+8. Total quiz duration is recalculated as total_questions multiplied by time_per_question_minutes.
+9. Added Edit Questions with a dropdown to select any question, load existing text/options/marks/correct answer, and update it in MySQL without creating a duplicate question.
+10. Timer now initializes from server-calculated remaining seconds, so refreshing the quiz does not reset the countdown.
+11. Active quiz sessions receive an inactivity timeout long enough to cover the quiz duration; after submission, timeout returns to 30 minutes.
+12. Server checks elapsed quiz time and does not accept answers submitted more than 15 seconds after the deadline.
+13. Added Database/upgrade_time_per_question.sql for an existing database. Run it once after backing up the database.
+
+Validation performed
+--------------------
+- Java source compiled with javac against lightweight Servlet API stubs to check Java syntax and internal references.
+- app.js passed Node.js syntax checking.
+- pom.xml and WEB-INF/web.xml passed XML parsing.
+- JSP directive delimiters, required timing field, question-update SQL, and authentication-filter route coverage passed static checks.
+- A live Tomcat/MySQL browser test could not be run in this environment because Maven, Tomcat, and MySQL are not installed here. Complete the manual checklist in README_MODIFIED_TESTING.md before relying on this in a live deployment.
+
+Database warning
+----------------
+Database/online_quiz_db.sql drops and recreates the project's tables. For an existing database with data to preserve, back up first and run Database/upgrade_time_per_question.sql once instead of re-importing the full setup script.
